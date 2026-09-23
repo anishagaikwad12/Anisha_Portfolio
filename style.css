@@ -1,47 +1,79 @@
+/* ==========================================================================
+   1. Google Fonts Import (Outfit)
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/* ==========================================================================
+   2. Global Reset & Base Styles
+   ========================================================================== */
+:root {
+  font-family: 'Outfit', sans-serif;
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: #07070a;
+  color: #ffffff;
+}
+
 body {
-    margin: 0;
-    font-family: Arial;
+  margin: 0;
+  padding: 0;
+  background-color: #07070a;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Navbar */
-nav {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px 40px;
-    background-color: black;
-    color: white;
+/* Text Selection Highlight */
+::selection {
+  background-color: #d4af37;
+  color: #000000;
 }
 
-nav ul {
-    display: flex;
-    list-style: none;
-    gap: 20px;
+/* ==========================================================================
+   3. Custom Scrollbar Styling
+   ========================================================================== */
+::-webkit-scrollbar {
+  width: 8px;
 }
 
-/* Home Section */
-.home {
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    background: linear-gradient(to right, #8e2de2, #4a00e0);
-    color: white;
+::-webkit-scrollbar-track {
+  background: #07070a;
 }
 
-.home h1 {
-    font-size: 40px;
+::-webkit-scrollbar-thumb {
+  background: #1f1f26;
+  border-radius: 4px;
+  border: 1px solid rgba(212, 175, 55, 0.2);
 }
 
-.home h3 {
-    margin: 10px 0;
+::-webkit-scrollbar-thumb:hover {
+  background: #d4af37;
 }
 
-button {
-    padding: 10px 20px;
-    border: none;
-    background-color: white;
-    color: black;
-    cursor: pointer;
-    margin-top: 10px;
+/* ==========================================================================
+   4. Custom Utility Classes
+   ========================================================================== */
+.gold-gradient-card {
+  background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 50%, #b8860b 100%);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+}
+
+.glass-card {
+  background: rgba(20, 20, 22, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.2);
+}
+
+.glass-card:hover {
+  border-color: rgba(212, 175, 55, 0.5);
+}
+
+.gold-text-gradient {
+  background: linear-gradient(135deg, #d4af37 0%, #f3e5ab 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

@@ -1,37 +1,432 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Anisha Portfolio</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anisha - Portfolio</title>
+
+  <!-- External Stylesheet -->
+  <link rel="stylesheet" href="style.css" />
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- React, Babel & Framer Motion CDNs -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://unpkg.com/framer-motion@10.16.4/dist/framer-motion.js"></script>
 </head>
+<body class="bg-[#07070a] text-white font-sans overflow-x-hidden selection:bg-[#d4af37] selection:text-black">
 
-<body>
+  <div id="root"></div>
 
-    <!-- Navbar -->
-    <nav>
-        <h2>Anisha</h2>
-        <ul>
-            <li>Home</li>
-            <li>Skills</li>
-            <li>Projects</li>
-            <li>Contact</li>
-        </ul>
-    </nav>
+  <script type="text/babel">
+    const { useState, useEffect, useRef } = React;
+    const { motion } = window.Motion;
 
-    <!-- Home Section -->
-    <section class="home">
-        <div class="content">
-            <h1>Hello, I'm Anisha 👋</h1>
-            <h3>AI/ML Student | Web Developer | UI/UX Designer</h3>
-            <p>
-                I build intelligent systems and creative web designs. 
-                Passionate about AI, Full Stack Development, and Design.
+    // --- Data Configuration ---
+    const personalInfo = {
+      name: "Anisha",
+      title: "UI/UX Designer & Tech Enthusiast",
+      heroText: "I blend creativity and technology to craft beautiful, user-friendly digital experiences. Skilled in Figma, MERN Stack, React, and Python.",
+      introAudioText: "Hi, I'm Anisha, a UI/UX Designer and Tech Enthusiast. Welcome to my portfolio!",
+      about: "Driven by a passion for intuitive design and full-stack development, I build digital products that combine aesthetic appeal with high-performance code.",
+      email: "anisha@example.com",
+    };
+
+    const skillsData = [
+      { category: "UI/UX & Design", items: ["Figma", "Wireframing", "Prototyping", "Design Systems"] },
+      { category: "Frontend", items: ["React.js", "JavaScript (ES6+)", "Tailwind CSS", "Framer Motion"] },
+      { category: "Backend & Database", items: ["Node.js", "Express.js", "MongoDB", "Python"] },
+      { category: "Tools & Methods", items: ["Git", "GitHub", "Postman", "REST APIs"] },
+    ];
+
+    const experienceData = [
+      {
+        role: "UI/UX & Frontend Developer Intern",
+        company: "Tech Solutions Inc.",
+        period: "2023 - Present",
+        desc: "Designed intuitive user interfaces in Figma and translated designs into responsive React components using Tailwind CSS.",
+      },
+      {
+        role: "Web Development Intern",
+        company: "Digital Crafts Agency",
+        period: "2022 - 2023",
+        desc: "Collaborated on full-stack web applications, integrated REST APIs, and optimized frontend performance.",
+      },
+    ];
+
+    const educationData = [
+      {
+        degree: "B.Tech in Computer Science",
+        institution: "State University",
+        period: "2020 - 2024",
+        desc: "Focused on Software Engineering, Web Technologies, and Human-Computer Interaction.",
+      },
+    ];
+
+    const projectsData = [
+      {
+        num: "01",
+        title: "AI Voice Assistant Portfolio",
+        desc: "An interactive portfolio built with React, Web Speech API, and Tailwind CSS featuring a galaxy starfield aesthetic.",
+        tags: ["React", "Tailwind CSS", "Web Speech API", "Framer Motion"],
+      },
+      {
+        num: "02",
+        title: "E-Commerce Design System",
+        desc: "Comprehensive Figma design system and MERN stack implementation for a modern digital storefront.",
+        tags: ["Figma", "React", "Node.js", "MongoDB"],
+      },
+      {
+        num: "03",
+        title: "Analytics Dashboard",
+        desc: "Real-time data visualization dashboard designed for tracking user engagement and system metrics.",
+        tags: ["React", "Python", "Tailwind CSS", "REST API"],
+      },
+    ];
+
+    // --- Component: Interactive Galaxy Background ---
+    function InteractiveBackground() {
+      const canvasRef = useRef(null);
+
+      useEffect(() => {
+        const canvas = canvasRef.current;
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d");
+
+        let width = (canvas.width = window.innerWidth);
+        let height = (canvas.height = window.innerHeight);
+
+        const stars = Array.from({ length: 180 }, () => ({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: Math.random() * 0.7 + 0.3,
+        }));
+
+        const handleResize = () => {
+          width = canvas.width = window.innerWidth;
+          height = canvas.height = window.innerHeight;
+          render();
+        };
+
+        const render = () => {
+          ctx.clearRect(0, 0, width, height);
+
+          stars.forEach((star) => {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+            ctx.fill();
+          });
+        };
+
+        window.addEventListener("resize", handleResize);
+        render();
+
+        return () => window.removeEventListener("resize", handleResize);
+      }, []);
+
+      return (
+        <div className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden bg-[#07070a]">
+          <div className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-purple-900/20 rounded-full blur-[140px]" />
+          <div className="absolute top-[40%] right-[-10%] w-[700px] h-[700px] bg-indigo-900/15 rounded-full blur-[160px]" />
+          <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-amber-600/10 rounded-full blur-[150px]" />
+          <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
+        </div>
+      );
+    }
+
+    // --- Component: Navbar ---
+    function Navbar() {
+      return (
+        <nav className="fixed top-0 left-0 right-0 z-50 bg-[#07070a]/80 backdrop-blur-md border-b border-white/10 px-6 py-4 max-w-7xl mx-auto flex justify-between items-center">
+          <a href="#home" className="text-xl font-bold text-white tracking-wide">
+            Anisha<span className="text-[#d4af37]">.</span>
+          </a>
+          <div className="hidden md:flex gap-8 text-xs font-semibold uppercase tracking-widest text-neutral-300">
+            <a href="#home" className="hover:text-[#d4af37] transition">Home</a>
+            <a href="#about" className="hover:text-[#d4af37] transition">About</a>
+            <a href="#skills" className="hover:text-[#d4af37] transition">Skills</a>
+            <a href="#projects" className="hover:text-[#d4af37] transition">Projects</a>
+            <a href="#contact" className="hover:text-[#d4af37] transition">Contact</a>
+          </div>
+          <a
+            href="#contact"
+            className="bg-[#d4af37] hover:bg-yellow-500 text-black text-xs font-bold px-5 py-2.5 rounded-full transition shadow-lg"
+          >
+            Hire Me
+          </a>
+        </nav>
+      );
+    }
+
+    // --- Component: Hero Section ---
+    function Hero() {
+      const [isSpeaking, setIsSpeaking] = useState(false);
+
+      const speakIntro = () => {
+        if (!("speechSynthesis" in window)) {
+          alert("Speech synthesis is not supported in your browser.");
+          return;
+        }
+
+        window.speechSynthesis.cancel();
+
+        const utterance = new SpeechSynthesisUtterance(personalInfo.introAudioText);
+        utterance.pitch = 1.1;
+        utterance.rate = 0.95;
+
+        const voices = window.speechSynthesis.getVoices();
+        const femaleVoice = voices.find(
+          (v) =>
+            v.lang.includes("en") &&
+            (v.name.includes("Female") ||
+              v.name.includes("Google") ||
+              v.name.includes("Samantha") ||
+              v.name.includes("Zira"))
+        );
+        if (femaleVoice) utterance.voice = femaleVoice;
+
+        utterance.onstart = () => setIsSpeaking(true);
+        utterance.onend = () => setIsSpeaking(false);
+        utterance.onerror = () => setIsSpeaking(false);
+
+        window.speechSynthesis.speak(utterance);
+      };
+
+      return (
+        <section id="home" className="relative pt-32 pb-16 px-6 lg:px-16 max-w-7xl mx-auto">
+          <div className="relative z-10 bg-gradient-to-br from-[#d4af37] via-[#f3e5ab] to-[#b8860b] rounded-3xl p-8 lg:p-12 overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-center shadow-[0_10px_30px_rgba(212,175,55,0.15)] text-black">
+            <div className="lg:col-span-6 z-10 space-y-6">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-tight font-['Outfit']">
+                Hi, I'm {personalInfo.name}, <br />
+                <span className="text-neutral-900 opacity-90">{personalInfo.title}</span>
+              </h1>
+
+              <p className="text-sm sm:text-base font-medium text-neutral-900/90 max-w-lg leading-relaxed">
+                {personalInfo.heroText}
+              </p>
+
+              <div className="flex flex-wrap items-center gap-4 pt-2">
+                <button
+                  onClick={speakIntro}
+                  className="bg-black hover:bg-neutral-800 text-white font-bold text-xs px-6 py-3.5 rounded-full flex items-center gap-2 shadow-xl transition cursor-pointer"
+                >
+                  {isSpeaking ? (
+                    <>
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
+                      Speaking... 🔊
+                    </>
+                  ) : (
+                    <>Listen Intro 🎙️</>
+                  )}
+                </button>
+
+                <a
+                  href="#projects"
+                  className="bg-black/10 hover:bg-black/20 text-black border border-black/30 text-xs font-bold px-6 py-3.5 rounded-full transition"
+                >
+                  View My Work
+                </a>
+              </div>
+            </div>
+
+            <div className="lg:col-span-6 relative flex flex-col justify-end items-center z-10">
+              {isSpeaking && (
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-72 h-72 rounded-full border-4 border-black/20 animate-ping absolute" />
+                </div>
+              )}
+
+              <motion.img
+                animate={isSpeaking ? { y: [0, -4, 0] } : { y: 0 }}
+                transition={{
+                  repeat: isSpeaking ? Infinity : 0,
+                  duration: 0.4,
+                  ease: "easeInOut",
+                }}
+                src="https://raw.githubusercontent.com/Anisha-01/assets/main/anisha.png"
+                alt="Anisha Avatar"
+                onClick={speakIntro}
+                className="w-full max-w-[500px] lg:max-w-[550px] h-auto object-contain drop-shadow-[0_20px_30px_rgba(0,0,0,0.25)] cursor-pointer"
+              />
+
+              <span className="text-[11px] font-bold text-black/80 mt-2 bg-white/50 px-4 py-1.5 rounded-full backdrop-blur-md shadow-sm">
+                💡 Click image or button to hear voice
+              </span>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // --- Component: About Section ---
+    function About() {
+      return (
+        <section id="about" className="py-20 px-6 lg:px-16 max-w-7xl mx-auto">
+          <div className="bg-[#141416]/80 backdrop-blur-md border border-amber-500/20 rounded-3xl p-8 lg:p-12 space-y-4">
+            <span className="text-xs font-bold text-[#d4af37] uppercase tracking-widest">About Me</span>
+            <h2 className="text-3xl font-extrabold text-white">Crafting Digital Experiences</h2>
+            <p className="text-neutral-300 leading-relaxed max-w-3xl text-sm sm:text-base">
+              {personalInfo.about}
+            </p>
+          </div>
+        </section>
+      );
+    }
+
+    // --- Component: Skills & Experience Section ---
+    function Skills() {
+      return (
+        <section id="skills" className="py-20 px-6 lg:px-16 max-w-7xl mx-auto space-y-16">
+          <div>
+            <span className="text-xs font-bold text-[#d4af37] uppercase tracking-widest">Capabilities</span>
+            <h2 className="text-3xl font-extrabold text-white mt-1 mb-8">Technical & Design Skills</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {skillsData.map((group, idx) => (
+                <div key={idx} className="bg-[#141416]/80 border border-white/10 rounded-2xl p-6">
+                  <h3 className="text-lg font-bold text-[#d4af37] mb-4">{group.category}</h3>
+                  <ul className="space-y-2">
+                    {group.items.map((item, i) => (
+                      <li key={i} className="text-xs font-medium text-neutral-300 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#d4af37]" />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-xl font-bold text-white mb-6">Experience</h3>
+              <div className="space-y-4">
+                {experienceData.map((exp, idx) => (
+                  <div key={idx} className="bg-[#141416]/80 border border-white/10 rounded-2xl p-6">
+                    <span className="text-xs font-semibold text-[#d4af37]">{exp.period}</span>
+                    <h4 className="text-base font-bold text-white mt-1">{exp.role}</h4>
+                    <p className="text-xs text-neutral-400 font-medium mb-2">{exp.company}</p>
+                    <p className="text-xs text-neutral-300 leading-relaxed">{exp.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-xl font-bold text-white mb-6">Education</h3>
+              <div className="space-y-4">
+                {educationData.map((edu, idx) => (
+                  <div key={idx} className="bg-[#141416]/80 border border-white/10 rounded-2xl p-6">
+                    <span className="text-xs font-semibold text-[#d4af37]">{edu.period}</span>
+                    <h4 className="text-base font-bold text-white mt-1">{edu.degree}</h4>
+                    <p className="text-xs text-neutral-400 font-medium mb-2">{edu.institution}</p>
+                    <p className="text-xs text-neutral-300 leading-relaxed">{edu.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      );
+    }
+
+    // --- Component: Projects Section ---
+    function Projects() {
+      return (
+        <section id="projects" className="py-20 px-6 lg:px-16 max-w-7xl mx-auto">
+          <div className="mb-12">
+            <span className="text-xs font-bold text-[#d4af37] uppercase tracking-widest">Portfolio</span>
+            <h2 className="text-3xl font-extrabold text-white mt-1">Featured Projects</h2>
+          </div>
+
+          <div className="space-y-6">
+            {projectsData.map((proj, idx) => (
+              <div
+                key={idx}
+                className="bg-[#141416]/80 border border-white/10 hover:border-amber-500/40 rounded-2xl p-6 lg:p-8 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 transition"
+              >
+                <div className="space-y-3 max-w-2xl">
+                  <span className="text-xs font-bold text-[#d4af37]">{proj.num} / FEATURED</span>
+                  <h3 className="text-xl font-bold text-white">{proj.title}</h3>
+                  <p className="text-xs text-neutral-300 leading-relaxed">{proj.desc}</p>
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {proj.tags.map((tag, i) => (
+                      <span
+                        key={i}
+                        className="text-[10px] font-semibold bg-[#1a1a1e] border border-white/10 text-amber-200/80 px-3 py-1 rounded-md"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                <button className="bg-[#d4af37] hover:bg-yellow-500 text-black text-xs font-bold px-6 py-3 rounded-full transition self-start lg:self-center">
+                  View Details ↗
+                </button>
+              </div>
+            ))}
+          </div>
+        </section>
+      );
+    }
+
+    // --- Component: Contact Section ---
+    function Contact() {
+      return (
+        <section id="contact" className="py-20 px-6 lg:px-16 max-w-7xl mx-auto">
+          <div className="bg-[#141416]/80 border border-amber-500/20 rounded-3xl p-8 lg:p-12 text-center space-y-6">
+            <span className="text-xs font-bold text-[#d4af37] uppercase tracking-widest">Get In Touch</span>
+            <h2 className="text-3xl font-extrabold text-white">Let's Work Together</h2>
+            <p className="text-xs sm:text-base text-neutral-300 max-w-md mx-auto">
+              Have a project in mind or want to discuss opportunities? Feel free to reach out.
             </p>
 
-            <button>View Projects</button>
-        </div>
-    </section>
+            <a
+              href={`mailto:${personalInfo.email}`}
+              className="inline-block bg-[#d4af37] hover:bg-yellow-500 text-black text-xs font-bold px-8 py-3.5 rounded-full transition shadow-lg"
+            >
+              Send Message ✉️
+            </a>
+          </div>
+        </section>
+      );
+    }
 
+    // --- Main Root Component ---
+    function App() {
+      return (
+        <div className="relative min-h-screen">
+          <InteractiveBackground />
+          <div className="relative z-10">
+            <Navbar />
+            <Hero />
+            <About />
+            <Skills />
+            <Projects />
+            <Contact />
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+  </script>
 </body>
 </html>
